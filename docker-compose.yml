@@ -1,19 +1,30 @@
 version: '3'
 services:
   db:
-    image: postgres
+    image: postgres:16
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: reading_recommendation
+      POSTGRES_DB: readings_recommendation
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
   app:
     build: .
     environment:
-      DATABASE_URL: postgres://user:password@db:5432/reading_recommendation
+      DATABASE_URL: postgres://user:password@db:5432/readings_recommendation
+      NODE_ENV: development
+      JWT_ACCESS_SECRET: your_secret_key
+      JWT_EXPIRES_IN: 3600
+      SALT: '10'     
     ports:
-      - "3000:3000"
+      - "3020:3000"
     depends_on:
       - db
+    volumes:
+      - ./src:/usr/src/app/src
+
+volumes:
+  db_data:
