@@ -64,7 +64,7 @@ export class BookController {
 		return new SuccessClass({}, 'Book deleted successfully');
 	}
 
-	@UserRolesDecorator(UserRole.ADMIN)
+	@UserRolesDecorator(UserRole.ADMIN, UserRole.USER)
 	@UseGuards(RoleGuard)
 	@UseGuards(JwtGuard)
 	@HttpCode(200)
